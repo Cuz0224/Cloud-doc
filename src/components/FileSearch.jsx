@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
-import { CloseCircleFilled } from '@ant-design/icons'
+import { CloseCircleOutlined } from '@ant-design/icons'
+
 
 const FileSearch = ({ title, onFileSearch }) => {
     const [inputActive, setInputActive] = useState(false)
@@ -51,6 +52,7 @@ const FileSearch = ({ title, onFileSearch }) => {
                 <div className='d-flex justify-content-between align-items-center'>
                 <input
                     ref={node}
+                    style={ {height:28}}
                     className='form-control col-10'
                     value={value}
                     onChange={(e)=>{setValue(e.target.value)}}
@@ -60,9 +62,7 @@ const FileSearch = ({ title, onFileSearch }) => {
                     className='icon-button col-2'
                     onClick={closeSearch}
                 >
-                    <CloseCircleFilled
-    
-                    />
+                    < CloseCircleOutlined />
                 </button>
                 </div>
 
@@ -70,5 +70,7 @@ const FileSearch = ({ title, onFileSearch }) => {
         </div>
     )
 }
+
+
 
 export default FileSearch
