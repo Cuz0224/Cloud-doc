@@ -5,16 +5,31 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { SearchOutlined } from '@ant-design/icons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
+import useKeyPress from '../hooks/useKeyPress'
 
 const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
     const [editStatus, setEditStatus] = useState(false)
     const [value, setValue] = useState('')
-    const closeSearch = (e) => {
-        e.preventDefault()
+    const closeSearch = () => {
+
         setEditStatus(false)
         setValue('')
     }
-    
+    const enterPressed = useKeyPress(13)
+    const escPressed = useKeyPress(27)
+
+    useEffect(() => {
+        
+        if (enterPressed && editStatus) {
+            const editItem = files.find(file=>file.id===editStatus)
+            onSaveEdit(editItem.id,value)
+            setEditStatus(false)
+            setValue('')
+        }
+        else if (escPressed && editStatus) {
+            closeSearch()
+        }
+    })
     
     return (
         <ul className='list-group list-group-flush file-list'>
@@ -28,7 +43,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
                             <>
                                 <span className='col-2'><FileMarkdownOutlined /></span>
                                 <span
-                                    className='c-link col-8'
+                                    className='c-link col-6'
                                     onClick={() => { onFileClick(file.id) }}
                                 >
                                     {file.title}
@@ -75,7 +90,8 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
 FileList.propTypes = {
     files: PropTypes.array,
     onFileClick: PropTypes.func,
-    onFileDelete:PropTypes.func,
+    onFileDelete: PropTypes.func,
+    onSaveEdit:PropTypes.func,
 }
 
 export default FileList
