@@ -36,7 +36,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
             {
                 files.map(file => (
                     <li
-                        className='list-group-item bg-light d-flex align-items-center file-item row justify-content-between'
+                        className='list-group-item bg-light d-flex align-items-center file-item row justify-content-between no-gutters'
                         key={file.id}
                     >
                         {   (file.id !== editStatus) &&
@@ -49,13 +49,13 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
                                     {file.title}
                                 </span>
                                 <button
-                                    className='icon-button col-1'
+                                    className='icon-button col-2'
                                     onClick={() => { setEditStatus(file.id); setValue(file.title) }}
                                 >
                                     <EditOutlined />
                                 </button>
                                 <button
-                                    className='icon-button col-1'
+                                    className='icon-button col-2'
                                     onClick={() => { onFileDelete(file.id) }}
                                 >
                                     <DeleteOutlined />

@@ -22,6 +22,50 @@ function App() {
   const openedFiles = openedFileIDs.map(openID => {
     return files.find(file => file.id === openID)
   })
+  
+  const fileCLick = (fileID) => {
+    //set current active file
+    setActiveFIleID(fileID)
+    //if openedFles don't have the current ID
+    //then add new fileID to openedFiles
+    if (!openedFileIDs.includes(fileID)) {
+      setOpenedFileIDs([...openedFileIDs, fileID])
+    }
+  }
+  
+  const tabClick = (fileID) => {
+    //set current active file
+    setActiveFIleID(fileID)
+  }
+
+  const tabClose = (id) => {
+    //remove current id from openedFileIDs
+    const tabsWithout = openedFileIDs.filter(fileID => fileID !== id)
+    setOpenedFileIDs(tabsWithout)
+    //set the active to the first opened tab if still tabs left
+    if (tabsWithout.length > 0) {
+      setActiveFIleID(tabsWithout[0])
+    }
+    else {
+      setActiveFIleID('')
+    }
+
+  }
+
+  const fileChange = (id, value) => {
+    //loop through file array to update new value
+    const newFiles = files.map(file => {
+      if (file.id === id) {
+        file.body = value
+      }
+      return file
+    })
+    setFiles(newFiles)
+    //update unsavedIDs
+    if (!unsavedFileIDs.includes(id)) {
+      setUnsavedFileIDs([ ...unsavedFileIDs,id])
+    }
+  }
   const activeFile = files.find(file => file.id === activeFileID)
   return (
     <div className="App container-fluid px-0">
@@ -34,7 +78,7 @@ function App() {
           />
           <FileList
             files={files}
-            onFileClick={(id) => { console.log(id) }}
+            onFileClick={fileCLick}
             onFileDelete={(id) => { console.log('deleteing', id) }}
             onSaveEdit={(id, newValue) => { console.log(id); console.log(newValue) }}
           />
@@ -67,14 +111,15 @@ function App() {
             <>
               <TabList
                 files={openedFiles}
-                onTabClick={(id) => { console.log(id) }}
-                onCloseTab={(id) => { console.log('closing', id) }}
+                onTabClick={tabClick}
+                onCloseTab={tabClose}
                 unsaveIds={unsavedFileIDs}
                 activeId={activeFileID}
               />
-              <SimpleMDE
+            <SimpleMDE
+                key={activeFile&& activeFile.id}
                 value={activeFile && activeFile.body}
-                onChange={(value) => { console.log(value) }}
+                onChange={(value) => { fileChange(activeFile.id, value) }}
               />
             </>
           }
