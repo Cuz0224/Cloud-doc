@@ -10,15 +10,18 @@ import TabList from './components/TabList'
 import { EditOutlined } from '@ant-design/icons'
 import { FileOutlined } from '@ant-design/icons'
 import SimpleMDE from 'react-simplemde-editor'
+// import uuidv4 from 'uuid/v4'
 import 'easymde/dist/easymde.min.css'
-import { useState } from 'react';
+import { useState } from 'react'; 
 
+const uuid = require('uuid');
 
 function App() {
   const [files, setFiles] = useState(defaultFiles)
   const [activeFileID, setActiveFIleID] = useState('')
   const [openedFileIDs, setOpenedFileIDs] = useState([])
   const [unsavedFileIDs, setUnsavedFileIDs] = useState([])
+  const [searchedFiles,setSearchedFiles] = useState([])
   const openedFiles = openedFileIDs.map(openID => {
     return files.find(file => file.id === openID)
   })
@@ -66,21 +69,62 @@ function App() {
       setUnsavedFileIDs([ ...unsavedFileIDs,id])
     }
   }
+
+  const deleteFile = (id) => {
+    //filter out the current file id
+    const newFiles = files.filter(file => file.id !== id)
+    setFiles(newFiles)
+    //close the tab if opened
+    tabClose(id)
+  }
+
+  const updateFileName = (id, title) => {
+    //loop through files, and update the title 
+    const newFiles = files.map(file => {
+      if (file.id === id) {
+        file.title = title
+        file.isNew = false
+      }
+      return file
+    })
+    setFiles(newFiles)
+  }
+
+  const fileSearch = (keyword) => {
+    //filter out the new files based on the keyword
+    const newFiles = files.filter(file => file.title.includes(keyword))
+    setSearchedFiles(newFiles)
+  }
+
+  const createNewFile = () => {
+    const newID = uuid.v4()
+    const newFiles = [
+      ...files,
+      {
+        id: newID,
+        title: '',
+        body: '## 请输入 Markdown',
+        createAt: new Date().getTime(),
+        isNew:true
+      }
+    ]
+    setFiles(newFiles)
+  }
+
   const activeFile = files.find(file => file.id === activeFileID)
+  const fileListArr = (searchedFiles.length > 0) ? searchedFiles : files
   return (
     <div className="App container-fluid px-0">
       <div className='row no-gutters'>
         <div className='col-3 bg-light left-panel'>
           <FileSearch
-            // title={'my-cloud-app'}
-            onFileSearch={(value)=>{console.log(value)}}
-
+            onFileSearch={fileSearch}
           />
           <FileList
-            files={files}
+            files={fileListArr}
             onFileClick={fileCLick}
-            onFileDelete={(id) => { console.log('deleteing', id) }}
-            onSaveEdit={(id, newValue) => { console.log(id); console.log(newValue) }}
+            onFileDelete={deleteFile}
+            onSaveEdit={updateFileName}
           />
           <div className='row no-gutters btn-bottom'>
             <div className='col-6'>
@@ -88,6 +132,7 @@ function App() {
                 text={'新建'}
                 colorClass={'btn-success'}
                 icon={<EditOutlined />}
+                onBtnClick={createNewFile}
               />
             </div>
             <div className='col-6'>

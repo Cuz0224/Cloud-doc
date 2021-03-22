@@ -13,7 +13,9 @@ const FileSearch = ({ title, onFileSearch }) => {
     const closeSearch = () => {
         setInputActive(false)
         setValue('')
+        onFileSearch('')
     }
+    
     let node = useRef(null)
     useEffect(() => {
         if (enterPressed && inputActive) {
