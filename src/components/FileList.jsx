@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 import useKeyPress from '../hooks/useKeyPress'
 
 const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
-    const [inputActive, setInputActive] = useState(false)
     const [editStatus, setEditStatus] = useState(false)
     const [value, setValue] = useState('')
     const closeSearch = (editItem) => {
@@ -25,10 +24,10 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
     // let node = useRef(null)
 
     // useEffect(() => {
-    //     if (inputActive) {
+    //     if (editItem.isNew) {
     //         node.current.focus()
     //     }
-    // },[inputActive])
+    // },[editItem])
 
     useEffect(() => {
         const newFile = files.find(file => file.isNew)
@@ -70,7 +69,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
                                 </span>
                                 <button
                                     className='icon-button col-2'
-                                onClick={() => { setEditStatus(file.id); setValue(file.title); setInputActive(true) }}
+                                onClick={() => { setEditStatus(file.id); setValue(file.title)}}
                                 >
                                     <EditOutlined />
                                 </button>
@@ -83,7 +82,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete }) => {
                             </>}
                         {   ((file.id === editStatus) || file.isNew) &&
                            <>
-                                <input
+                            <input
                                     style={ {height:28}}
                                     className='form-control col-10'
                                     value={value}
