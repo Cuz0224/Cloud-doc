@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { CloseOutlined } from '@ant-design/icons'
-import { SaveOutlined } from '@ant-design/icons'
 import './TabList.scss'
 
 const TabList = ({ files, activeId, unsaveIds, onTabClick, onCloseTab }) => {

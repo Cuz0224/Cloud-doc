@@ -7,6 +7,7 @@ import FileList from './components/FileList'
 import defaultFiles from './utils/defaultFiles'
 import ButtonBtn from './components/BottomBtn'
 import TabList from './components/TabList'
+import fileHelper from './utils/fileHelper'
 import { EditOutlined } from '@ant-design/icons'
 import { FileOutlined } from '@ant-design/icons'
 import SimpleMDE from 'react-simplemde-editor'
@@ -15,8 +16,9 @@ import { flattenArr, objToArr } from './utils/helper'
 import 'easymde/dist/easymde.min.css'
 import { useState } from 'react'; 
 
-const fs = window.require('fs')
-console.dir(fs)
+//require node.js modules
+const { join } = window.require('path')
+const { remote } = window.require('electron')
 const uuid = require('uuid');
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
   // const openedFiles = openedFileIDs.map(openID => {
   //   return files.find(file => file.id === openID)
   // })
+  const savedLocation = remote.app.getPath('documents')
   
   const fileCLick = (fileID) => {
     //set current active file
@@ -84,7 +87,7 @@ function App() {
     tabClose(id)
   }
 
-  const updateFileName = (id, title) => {
+  const updateFileName = (id, title, isNew) => {
     //loop through files, and update the title 
     // const newFiles = files.map(file => {
     //   if (file.id === id) {
@@ -93,7 +96,19 @@ function App() {
     //   }
     //   return file
     // })
-    const modifiedFile = { ...files[id], title, isNew: false}
+    const modifiedFile = { ...files[id], title, isNew: false }
+    if (isNew) {
+      fileHelper.writeFile(join(savedLocation, `${title}.md`), files[id].body).then(
+        () => setFiles({ ...files, [id]: modifiedFile})
+      )
+    }
+    else {
+      fileHelper.renameFile(join(savedLocation, `${files[id].title}.md`),
+      join(savedLocation, `${title}.md`)
+      ).then(()=> {
+        setFiles({ ...files, [id]:modifiedFile})
+      })
+    }
     setFiles({ ...files, [id]:modifiedFile})
   }
 

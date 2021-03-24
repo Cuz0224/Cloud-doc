@@ -1,5 +1,5 @@
-const fs = require('fs').promises
-const path = require('path')
+const fs = window.require('fs').promises
+const path = window.require('path')
 
 const fileHelper = {
     readFile: (path) => {
@@ -16,22 +16,26 @@ const fileHelper = {
     }
 }
 
-const testPath = path.join(__dirname, 'helper.js')
-const testWritePath = path.join(__dirname, 'hello.md')
-const renamePath = path.join (__dirname, 'rename.md')
+export default fileHelper
 
-fileHelper.readFile(testPath).then((data) => {
-    console.log(data)
-})
+//测试内容
+// const testPath = path.join(__dirname, 'helper.js')
+// const testWritePath = path.join(__dirname, 'hello.md')
+// const renamePath = path.join (__dirname, 'rename.md')
 
-fileHelper.writeFile(testWritePath, '## hello world').then(() => {
-    console.log('写入成功')
-})
+// fileHelper.readFile(testPath).then((data) => {
+//     console.log(data)
+// })
 
-fileHelper.renameFile(testWritePath, renamePath).then(() => {
-    console.log('reaname successfully')
-})
+// fileHelper.writeFile(testWritePath, '## hello world').then(() => {
+//     console.log('写入成功')
+// })
 
-fileHelper.deleteFile(renamePath).then(() => {
-    console.log(`${renamePath} delete successfully`)
-})
+// fileHelper.renameFile(testWritePath, renamePath).then(() => {
+//     console.log('reaname successfully')
+// })
+
+// fileHelper.deleteFile(renamePath).then(() => {
+//     console.log(`${renamePath} delete successfully`)
+// })
+
