@@ -18,24 +18,24 @@ const fileHelper = {
 
 export default fileHelper
 
-//测试内容
-// const testPath = path.join(__dirname, 'helper.js')
-// const testWritePath = path.join(__dirname, 'hello.md')
-// const renamePath = path.join (__dirname, 'rename.md')
+测试内容
+const testPath = path.join(__dirname, 'helper.js')
+const testWritePath = path.join(__dirname, 'hello.md')
+const renamePath = path.join (__dirname, 'rename.md')
 
-// fileHelper.readFile(testPath).then((data) => {
-//     console.log(data)
-// })
+fileHelper.readFile(testPath).then((data) => {
+    console.log(data)
+})
 
-// fileHelper.writeFile(testWritePath, '## hello world').then(() => {
-//     console.log('写入成功')
-// })
+fileHelper.writeFile(testWritePath, '## hello world').then(() => {
+    console.log('写入成功')
+})
 
-// fileHelper.renameFile(testWritePath, renamePath).then(() => {
-//     console.log('reaname successfully')
-// })
+fileHelper.renameFile(testWritePath, renamePath).then(() => {
+    console.log('reaname successfully')
+})
 
-// fileHelper.deleteFile(renamePath).then(() => {
-//     console.log(`${renamePath} delete successfully`)
-// })
+fileHelper.deleteFile(renamePath).then(() => {
+    console.log(`${renamePath} delete successfully`)
+})
 
